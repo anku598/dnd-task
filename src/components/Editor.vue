@@ -20,7 +20,12 @@
         <label for="text-color">Text color</label>
         <input type="color" id="text-color" v-model="textColor" />
       </div>
+      <div class="change-action-btn">
+        <button @click="saveChanges">Save</button>
+        <button @click="previewChanges">Preview</button>
+      </div>
     </div>
+
     <div
       class="pop-up-wrapper"
       :style="{ backgroundColor: bgColor, color: textColor }"
@@ -111,6 +116,10 @@
         </Container>
       </div>
     </div>
+
+    <div class="preview-text" v-if="previewMode">
+      <h4>You are in Preview Mode ! Reload to see previous Version</h4>
+    </div>
   </div>
 </template>
 
@@ -128,6 +137,7 @@ export default {
       editorOpen: false,
       bgColor: "#e07a5f",
       textColor: "#ffffff",
+      previewMode: false,
     };
   },
   methods: {
@@ -186,6 +196,21 @@ export default {
       localStorage.setItem("bgColor", this.bgColor);
       localStorage.setItem("textColor", this.textColor);
     },
+
+    saveChanges() {
+      localStorage.setItem("items", JSON.stringify(this.items));
+      localStorage.setItem("bgColor", this.bgColor);
+      localStorage.setItem("textColor", this.textColor);
+      this.editorOpen = false;
+      this.previewMode = false;
+    },
+
+    previewChanges() {
+      localStorage.setItem("preview", JSON.stringify(this.items));
+      this.editorOpen = false;
+      this.previewMode = true;
+    },
+
     onDrop(dropResult) {
       this.items = applyDrag(this.items, dropResult);
       this.save();
@@ -296,6 +321,9 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  opacity: 0;
+  transform: translateX(50%);
+  animation: fadeleft 0.5s ease-out forwards;
 }
 
 .pop-up-wrapper::before {
@@ -436,7 +464,8 @@ export default {
   /* height: 100%; */
 }
 
-.toolbar button {
+.toolbar button,
+.change-action-btn button {
   background: transparent;
   border-bottom: 1px solid #fff;
   padding: 15px 20px;
@@ -451,6 +480,24 @@ export default {
 }
 .toolbar button:hover {
   opacity: 0.5;
+}
+
+.change-action-btn button {
+  background: #2b2b2b;
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  border: 0;
+  border-right: 1px solid #fff;
+}
+
+.change-action-btn button:last-child {
+  border-right: 0;
+}
+
+.change-action-btn {
+  display: flex;
+  justify-content: space-between;
 }
 
 .editor-btn {
@@ -478,6 +525,14 @@ label {
   color: #fff;
   text-transform: capitalize;
   font-weight: 600;
+}
+
+.preview-text {
+  margin-top: 60px;
+  font-size: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @media screen and (max-width: 768px) {
@@ -522,6 +577,17 @@ label {
 
   .star-rating .big {
     font-size: 18px;
+  }
+}
+
+@keyframes fadeleft {
+  from {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 </style>
