@@ -322,8 +322,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   opacity: 0;
-  transform: translateX(50%);
-  animation: fadeleft 0.5s ease-out forwards;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
 .pop-up-wrapper::before {
@@ -580,14 +579,12 @@ label {
   }
 }
 
-@keyframes fadeleft {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateX(50%);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
   }
 }
 </style>
