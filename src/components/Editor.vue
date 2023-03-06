@@ -1,7 +1,7 @@
 <template>
   <div>
     <button @click="editorOpen = !editorOpen" class="editor-btn">
-      {{ editorOpen ? "Close " : "Open Editor" }}
+      {{ editorOpen ? 'Close ' : 'Open Editor' }}
     </button>
     <div class="editor-drawer" :class="{ open: editorOpen }">
       <div class="toolbar">
@@ -21,7 +21,7 @@
         <input type="color" id="text-color" v-model="textColor" />
       </div>
       <div class="change-action-btn">
-        <button @click="saveChanges">Save</button>
+        <button @click="save">Save</button>
         <button @click="previewChanges">Preview</button>
       </div>
     </div>
@@ -124,19 +124,19 @@
 </template>
 
 <script>
-import { Container, Draggable } from "vue-smooth-dnd";
-import { applyDrag } from "../utils/helper.js";
+import { Container, Draggable } from 'vue-smooth-dnd';
+import { applyDrag } from '../utils/helper.js';
 
 export default {
-  name: "Editor",
+  name: 'Editor',
   components: { Container, Draggable },
   data() {
     return {
       items: [],
       activeIndex: null,
       editorOpen: false,
-      bgColor: "#e07a5f",
-      textColor: "#ffffff",
+      bgColor: '#e07a5f',
+      textColor: '#ffffff',
       previewMode: false,
     };
   },
@@ -144,41 +144,41 @@ export default {
     addText() {
       this.items.push({
         id: this.items.length + 1,
-        type: "text",
-        text: "All the Text and elements in this popup should be editable and dragabble",
+        type: 'text',
+        text: 'All the Text and elements in this popup should be editable and dragabble',
       });
     },
 
     addField() {
       this.items.push({
         id: this.items.length + 1,
-        type: "field",
-        fieldType: "text",
-        placeholder: "Input Field",
-        value: "",
+        type: 'field',
+        fieldType: 'text',
+        placeholder: 'Input Field',
+        value: '',
       });
     },
 
     addButton() {
       this.items.push({
         id: this.items.length + 1,
-        type: "button",
-        btntext: "Sign Up",
+        type: 'button',
+        btntext: 'Sign Up',
       });
     },
 
     addSmalltext() {
       this.items.push({
         id: this.items.length + 1,
-        type: "smalltext",
-        text: "No Credit card required. No Surprises",
+        type: 'smalltext',
+        text: 'No Credit card required. No Surprises',
       });
     },
 
     addStars() {
       this.items.push({
         id: this.items.length + 1,
-        type: "stars",
+        type: 'stars',
         // starList: "No Credit card required. No Surprises",
       });
     },
@@ -192,21 +192,18 @@ export default {
       this.save();
     },
     save() {
-      localStorage.setItem("items", JSON.stringify(this.items));
-      localStorage.setItem("bgColor", this.bgColor);
-      localStorage.setItem("textColor", this.textColor);
-    },
-
-    saveChanges() {
-      localStorage.setItem("items", JSON.stringify(this.items));
-      localStorage.setItem("bgColor", this.bgColor);
-      localStorage.setItem("textColor", this.textColor);
-      this.editorOpen = false;
-      this.previewMode = false;
+      localStorage.setItem('items', JSON.stringify(this.items));
+      localStorage.setItem('bgColor', this.bgColor);
+      localStorage.setItem('textColor', this.textColor);
+      const savedItems = localStorage.getItem('items');
+      this.items = JSON.parse(savedItems);
+      if (this.editorOpen) {
+        this.editorOpen = false;
+        this.previewMode = false;
+      }
     },
 
     previewChanges() {
-      localStorage.setItem("preview", JSON.stringify(this.items));
       this.editorOpen = false;
       this.previewMode = true;
     },
@@ -222,38 +219,39 @@ export default {
     },
   },
   mounted() {
-    const savedItems = localStorage.getItem("items");
+    const savedItems = localStorage.getItem('items');
     if (savedItems) {
       this.items = JSON.parse(savedItems);
+      this.save();
     } else {
       this.items = [
         {
           id: 1,
-          type: "stars",
+          type: 'stars',
           //   starlist: "All the Text and elements in this popup should be editable and dragabble",
         },
         {
           id: 2,
-          type: "text",
-          text: "All the Text and elements in this popup should be editable and dragabble",
+          type: 'text',
+          text: 'All the Text and elements in this popup should be editable and dragabble',
         },
         {
           id: 3,
-          type: "field",
-          fieldType: "text",
-          placeholder: "Email",
-          value: "",
+          type: 'field',
+          fieldType: 'text',
+          placeholder: 'Email',
+          value: '',
         },
         {
           id: 4,
-          type: "button",
+          type: 'button',
 
-          btntext: "Sign Up",
+          btntext: 'Sign Up',
         },
         {
           id: 5,
-          type: "smalltext",
-          text: "No Credit card required. No Surprises",
+          type: 'smalltext',
+          text: 'No Credit card required. No Surprises',
         },
 
         // add more initial items as needed
@@ -261,45 +259,12 @@ export default {
       this.save();
     }
 
-    this.items = [
-      {
-        id: 1,
-        type: "stars",
-        //   starlist: "All the Text and elements in this popup should be editable and dragabble",
-      },
-      {
-        id: 2,
-        type: "text",
-        text: "All the Text and elements in this popup should be editable and dragabble",
-      },
-      {
-        id: 3,
-        type: "field",
-        fieldType: "text",
-        placeholder: "Email",
-        value: "",
-      },
-      {
-        id: 4,
-        type: "button",
-
-        btntext: "Sign Up",
-      },
-      {
-        id: 5,
-        type: "smalltext",
-        text: "No Credit card required. No Surprises",
-      },
-
-      // add more initial items as needed
-    ];
-
-    const savedBgColor = localStorage.getItem("bgColor");
+    const savedBgColor = localStorage.getItem('bgColor');
     if (savedBgColor) {
       this.bgColor = savedBgColor;
     }
 
-    const savedTextColor = localStorage.getItem("textColor");
+    const savedTextColor = localStorage.getItem('textColor');
     if (savedTextColor) {
       this.textColor = savedTextColor;
     }
@@ -334,7 +299,7 @@ export default {
   height: 470px;
   border-radius: 100%;
   border: 2px solid #fff;
-  content: "";
+  content: '';
 }
 
 .nested-content-wrapper {
