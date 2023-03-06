@@ -222,7 +222,6 @@ export default {
     const savedItems = localStorage.getItem('items');
     if (savedItems) {
       this.items = JSON.parse(savedItems);
-      this.save();
     } else {
       this.items = [
         {
