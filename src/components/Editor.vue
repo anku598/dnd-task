@@ -222,13 +222,11 @@ export default {
     const savedItems = localStorage.getItem('items');
     if (savedItems) {
       this.items = JSON.parse(savedItems);
-      this.save();
     } else {
       this.items = [
         {
           id: 1,
           type: 'stars',
-          //   starlist: "All the Text and elements in this popup should be editable and dragabble",
         },
         {
           id: 2,
@@ -253,8 +251,6 @@ export default {
           type: 'smalltext',
           text: 'No Credit card required. No Surprises',
         },
-
-        // add more initial items as needed
       ];
       this.save();
     }
@@ -416,7 +412,6 @@ export default {
   background: #020202;
   max-width: 300px;
   width: 100%;
-  /* min-height: 50vh; */
   top: 160px;
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
